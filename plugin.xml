@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="cordova-plugin-facebook-sdk"
+        version="1.0.0">
+
+    <js-module src="www/sdk.js" name="facebookSdk">
+        <clobbers target="window.facebookSdk" />
+    </js-module>
+
+    <platform name="android">
+        <framework src="android/fb-sdk.gradle" custom="true" type="gradleReference" />
+        <source-file src="android/FacebookSdkPlugin.java" target-dir="src/cordova/plugin" />
+        <resource-file src="android/stringsFb.xml" target="res/values/stringsFb.xml" />
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="facebookSdkPlugin">
+                <param name="android-package" value="cordova.plugin.facebookSdkPlugin"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.INTERNET"/>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+            <activity android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name" android:name="com.facebook.FacebookActivity" />
+            <activity android:exported="true" android:name="com.facebook.CustomTabActivity">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                    <data android:scheme="@string/fb_login_protocol_scheme" />
+                </intent-filter>
+            </activity>
+        </config-file>
+
+    </platform>
+</plugin>
